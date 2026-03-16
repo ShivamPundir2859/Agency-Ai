@@ -1,21 +1,48 @@
 import React from 'react'
 import Title from './Title'
 import assets from '../assets/assets'
+import toast from 'react-hot-toast'  // npm install react-hot-toast
 
 const ContactUs = () => {
+    const onSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+
+        formData.append("access_key", "1ce68628-3f88-4348-943b-6434e006aa2d");
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                toast.success('Thank you for your submission!')
+                event.target.reset();
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (error) {
+            toast.error(error.message)
+        }
+
+    }
+
     return (
         <div id='contact-us' className='flex flex-col items-center gap-7 px-4 sm:px-12
         lg:px-24 xl:px-40 pt-30 text-gray-700 dark:text-white'>
             <Title title='Reach out to us' desc='From strategy to execution, we craft digital solutions that move your business forward.' />
 
-            <form className='grid sm:grid-cols-2 gap-3 sm:gap-5 max-w-2xl w-full'>
+            <form onSubmit={onSubmit} className='grid sm:grid-cols-2 gap-3 sm:gap-5 max-w-2xl w-full'>
                 <div>
                     <p className='am-2 text-sm font-medium'>Your Name</p>
                     <div className='flex pl-3 rounded-lg border border-grey-300
                     dark:border-gray-600'>
                         <img src={assets.person_icon} alt="" />
-                        <input type="text" placeholder='Enter your name' className='w-full
-                        p-3 text-sm outline-none'/>
+                        <input name="name" type="text" placeholder='Enter your name' className='w-full
+                        p-3 text-sm outline-none' required />
                     </div>
                 </div>
                 <div>
@@ -23,14 +50,14 @@ const ContactUs = () => {
                     <div className='flex pl-3 rounded-lg border border-grey-300
                     dark:border-gray-600'>
                         <img src={assets.email_icon} alt="" />
-                        <input type="text" placeholder='Enter your email' className='w-full
-                        p-3 text-sm outline-none'/>
+                        <input name="email" type="text" placeholder='Enter your email' className='w-full
+                        p-3 text-sm outline-none' required />
                     </div>
                 </div>
 
                 <div className='sm:col-span-2'>
                     <p className='am-2 text-sm font-medium'>Message</p>
-                    <textarea id="" rows={10} placeholder='Enter your message'
+                    <textarea name="message" id="" rows={10} placeholder='Enter your message'
                         className='w-full p-3 text-sm outline-none rounded-lg border border-gray-300
                         dark:border-gray-600'></textarea>
                 </div>
@@ -42,6 +69,7 @@ const ContactUs = () => {
 
 
             </form>
+            <br /> <br />
         </div>
     )
 }
