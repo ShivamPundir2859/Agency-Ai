@@ -69,7 +69,6 @@ const ContactUs = () => {
 
 
             </form>
-            <br /> <br />
         </div>
     )
 }
