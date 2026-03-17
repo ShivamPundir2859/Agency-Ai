@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react'
+import { motion } from 'motion/react'
+
 
 const ServiceCard = ({ service, index }) => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -11,7 +13,12 @@ const ServiceCard = ({ service, index }) => {
     }
 
     return (
-        <div className='relative overflow-hidden max-w-lg sm:m-4 rounded-xl border
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.2 }}
+            viewport={{ once: true }}
+            className='relative overflow-hidden max-w-lg sm:m-4 rounded-xl border
         border-gray-200 dark:border-gray-700 shadow-2xl shadow-gray-100 dark:shadow-white/10 p-[2px]'
             onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}
             ref={divRef} onMouseMove={handleMouseMove}>
@@ -36,7 +43,7 @@ const ServiceCard = ({ service, index }) => {
                 </div>
             </div>
 
-        </div>
+        </motion.div>
     )
 }
 
